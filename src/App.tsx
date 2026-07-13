@@ -2,7 +2,13 @@ import { useState } from "react";
 import type { JSX } from "react/jsx-dev-runtime"
 import { toast } from "sonner"
 
-import { Expense, type DeleteExpenseDialogParams, type EditOrCreateExpenseDialogParams, type ExpenseTableParams } from "./types/expense.models";
+import {
+  Expense, 
+  type DeleteExpenseDialogParams, 
+  type EditOrCreateExpenseDialogParams, 
+  type ExpenseTableParams
+} from "./types/expense.models";
+import { initList, saveIntoLocalStorage } from "./utils/common.utils";
 
 import Nav from "./components/Navbar"
 import EditOrCreateExpenseDialog from "./components/dialogs/EditOrCreateExpenseDialog"
@@ -10,9 +16,8 @@ import DeleteExpenseDialog from "./components/dialogs/DeleteExpenseDialog";
 import ExpenseTable from "./components/ExpenseTable";
 import { Toaster } from "./components/ui/sonner";
 
-
 export default function App(): JSX.Element {
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>(() => initList());
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editOrCreateExpense, setEditOrCreateExpense] = useState<Expense | undefined>(undefined)
@@ -25,6 +30,7 @@ export default function App(): JSX.Element {
       oldAndNewExpenses.push(newExpense)
     }
     setExpenses(oldAndNewExpenses);
+    saveIntoLocalStorage(oldAndNewExpenses)
     setEditOrCreateExpense(undefined)
     setEditingIndex(null)
   }
@@ -36,6 +42,7 @@ export default function App(): JSX.Element {
     }
     const newExpenses = expenses.filter((_, index) => !selectedRows.has(index))
     setExpenses(newExpenses)
+    saveIntoLocalStorage(newExpenses)
     setSelectedRows(new Set())
   }
 

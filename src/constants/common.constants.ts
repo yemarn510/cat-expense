@@ -23,3 +23,6 @@ export const EXPENSE_DICTIONARY = EXPENSE_CATEGORIES.reduce(
     return acc
   },
   {} as Record<string, string>)
+
+
+export const EXPENSES_STORAGE_KEY = "expenses"

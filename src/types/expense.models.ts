@@ -66,3 +66,9 @@ export type CatFactResponse = {
   fact: string
   length: number
 }
+
+export type StoredExpense = {
+  item?: unknown
+  category?: unknown
+  amount?: unknown
+}
