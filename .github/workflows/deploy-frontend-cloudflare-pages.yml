@@ -1,0 +1,32 @@
+name: Deploy Frontend to Cloudflare Pages
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - Frontend/**/*
+      - .github/workflows/deploy-frontend-cloudflare-pages.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.19.0"
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+
+      - name: Build and publish to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          cd Frontend
+          npm ci
+          npm run build
+          npx wrangler pages deploy ./dist --project-name=pawket --branch=main
