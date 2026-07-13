@@ -18,10 +18,12 @@ describe('CatService', () => {
 
     const service = new CatService()
     await expect(service.getCatFact()).resolves.toEqual(payload)
+    expect(service.cachedFacts).toEqual(payload)
     expect(fetchMock).toHaveBeenCalledWith(API_ENDPOINTS.CAT_FACT)
   })
 
-  it('throws when the response is not ok', async () => {
+  it('returns cached fact when the response is not ok', async () => {
+    const cached = { fact: 'Cached cat fact.', length: 16 }
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
@@ -32,6 +34,16 @@ describe('CatService', () => {
     )
 
     const service = new CatService()
-    await expect(service.getCatFact()).rejects.toThrow('Failed to load cat fact')
+    service.cachedFacts = cached
+    await expect(service.getCatFact()).resolves.toEqual(cached)
+  })
+
+  it('returns cached fact when fetch fails', async () => {
+    const cached = { fact: 'Offline cat fact.', length: 17 }
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network down')))
+
+    const service = new CatService()
+    service.cachedFacts = cached
+    await expect(service.getCatFact()).resolves.toEqual(cached)
   })
 })
