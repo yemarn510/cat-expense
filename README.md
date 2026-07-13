@@ -22,6 +22,14 @@ npx playwright install chromium   # first time only
 npm test
 ```
 
+Set `BASE_URL` in `Playwright/.env` (see `.env.example`), or pass it inline.
+Defaults to `http://localhost:3001` when unset.
+
+```bash
+# Playwright/.env
+BASE_URL=https://pawket.pages.dev
+```
+
 Useful scripts (from `Playwright/`):
 
 - `npm test` — run all e2e tests
@@ -29,4 +37,4 @@ Useful scripts (from `Playwright/`):
 - `npm run test:headed` — headed browser
 - `npm run report` — open the HTML report
 
-The Playwright config starts `Frontend` via `npm run dev` on port 3001 automatically.
+When `BASE_URL` points at localhost, Playwright starts `Frontend` via `npm run dev` automatically. For remote URLs, the local server is skipped.
