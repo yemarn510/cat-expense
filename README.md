@@ -6,6 +6,16 @@
 
 Live app: https://pawket.pages.dev
 
+## Demo
+
+### Adding an expense
+
+![Adding an expense](./docs/demos/add-expense.gif)
+
+### Deleting an expense
+
+![Deleting an expense](./docs/demos/delete-expense.gif)
+
 ## Frontend
 
 ```bash
@@ -52,13 +62,6 @@ Frontend/
 └── vite.config.ts          # Vite + Vitest config
 ```
 
-- **`public/`** — Files referenced by path (favicon, images, SVGs); not processed by the bundler the same way as `src/`.
-- **`src/components/`** — Screen-level and feature UI. Feature components live at this level; reusable dialogs under `dialogs/`; Shadcn building blocks under `ui/`.
-- **`src/constants/`** — Fixed values used across the app (e.g. API endpoints).
-- **`src/lib/`** — Low-level utilities shared by components (class-name merging, etc.).
-- **`src/services/`** — Calls to external APIs and related data access.
-- **`src/types/`** — Shared TypeScript types/models for expenses and related data.
-- **`src/utils/`** — Domain helpers and formatting; often covered by unit tests.
 
 ### Unit tests (Vitest)
 
