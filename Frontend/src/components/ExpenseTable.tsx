@@ -58,6 +58,7 @@ export default function ExpenseTable({
                 className="border border-foreground"
                 disabled={expenses.length === 0}
                 onCheckedChange={toggleSelectAll}
+                aria-label={allSelected ? "Uncheck all expenses" : "Check all expenses"}
               />
             </div>
           </TableHead>
@@ -86,6 +87,7 @@ export default function ExpenseTable({
                   className="border border-foreground"
                   checked={params.selectedRows.has(index)}
                   onCheckedChange={() => toggleCheck(index)}
+                  aria-label={`Select ${expense.item}`}
                 />
               </TableCell>
               <TableCell>{expense.item}</TableCell>
@@ -103,7 +105,7 @@ export default function ExpenseTable({
                     aria-label={`Edit ${expense.item}`}
                     onClick={() => params.startEditExpense(index)}
                   >
-                    <Pencil />
+                    <Pencil aria-hidden="true" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -111,7 +113,7 @@ export default function ExpenseTable({
                     aria-label={`Duplicate ${expense.item}`}
                     onClick={() => params.diplicateIndex(index)}
                   >
-                    <Copy />
+                    <Copy aria-hidden="true" />
                   </Button>
                 </div>
               </TableCell>

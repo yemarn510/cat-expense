@@ -33,6 +33,7 @@ export default function AddExpenseDialog({
 }): JSX.Element {
 
   const expense = params.editOrCreateExpense;
+  const isEditing = params.editingIndex !== null
   const [error, setError] = useState<ExpenseErrors>({} as ExpenseErrors)
   const [catFact, setCatFact] = useState<string>("")
   const [catFactLoading, setCatFactLoading] = useState<boolean>(false)
@@ -90,9 +91,10 @@ export default function AddExpenseDialog({
 
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{ params.editingIndex !== undefined ? 'Edit Expense' : 'Add Expense'}</DialogTitle>
+          <DialogTitle>{isEditing ? 'Edit Expense' : 'Add Expense'}</DialogTitle>
           <DialogDescription>
-            Note down expense detils for your cat to track
+            Note down expense details for your cat to track. Item name, category,
+            and amount are required.
           </DialogDescription>
         </DialogHeader>
 
@@ -108,13 +110,21 @@ export default function AddExpenseDialog({
                   name="item"
                   placeholder="Item Name"
                   value={expense.item}
+                  aria-invalid={!!error['item']}
+                  aria-describedby={error['item'] ? 'item-error' : undefined}
                   onChange={(e) =>
                     params.setExpense(new Expense({ ...expense, item: e.target.value }))
                   }
                 />
                 {
                   error['item'] &&
-                  <small className="text-destructive">This fields cannot be blank*</small>
+                  <small
+                    id="item-error"
+                    className="text-destructive"
+                    role="alert"
+                  >
+                    This fields cannot be blank*
+                  </small>
                 }
               </Field>
 
@@ -127,7 +137,12 @@ export default function AddExpenseDialog({
                     params.setExpense(new Expense({ ...expense, category: category ?? '' }))
                   }
                 >
-                  <SelectTrigger id="category" className="w-full">
+                  <SelectTrigger
+                    id="category"
+                    className="w-full"
+                    aria-invalid={!!error['category']}
+                    aria-describedby={error['category'] ? 'category-error' : undefined}
+                  >
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -140,7 +155,13 @@ export default function AddExpenseDialog({
                 </Select>
                 {
                   error['category'] &&
-                  <small className="text-destructive">This fields cannot be blank*</small>
+                  <small
+                    id="category-error"
+                    className="text-destructive"
+                    role="alert"
+                  >
+                    This fields cannot be blank*
+                  </small>
                 }
               </Field>
 
@@ -155,6 +176,8 @@ export default function AddExpenseDialog({
                   step="1"
                   placeholder="Item amount"
                   value={expense.amount || ''}
+                  aria-invalid={!!error['amount']}
+                  aria-describedby={error['amount'] ? 'amount-error' : undefined}
                   onChange={(e) =>
                     params.setExpense(
                       new Expense({
@@ -166,7 +189,13 @@ export default function AddExpenseDialog({
                 />
                 {
                   error['amount'] &&
-                  <small className="text-destructive">This fields cannot be blank*</small>
+                  <small
+                    id="amount-error"
+                    className="text-destructive"
+                    role="alert"
+                  >
+                    This fields cannot be blank*
+                  </small>
                 }
               </Field>
             </FieldGroup>
@@ -179,7 +208,8 @@ export default function AddExpenseDialog({
 
               <img
                 src={`/images/${randomCatImage}.svg`}
-                alt="cat facts"
+                alt=""
+                aria-hidden="true"
                 className="absolute bottom-0 right-0 max-h-30 w-auto -z-10"
               />
             </aside>

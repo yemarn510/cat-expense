@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -19,7 +20,7 @@ export default function DeleteExpenseDialog({
 }): JSX.Element {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
+  const selectedCount = params.selectedRows.size
 
   function confirmDelete(): void {
     params.deleteExpense();
@@ -39,11 +40,16 @@ export default function DeleteExpenseDialog({
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle className="text-destructive">Delete Confirmation</DialogTitle>
+          <DialogDescription>
+            {selectedCount === 0
+              ? "No expenses are selected."
+              : `Delete ${selectedCount} selected expense${selectedCount === 1 ? "" : "s"}?`}
+          </DialogDescription>
         </DialogHeader>
 
-        <h3 className="p-5">
+        <p className="p-5">
           Are you sure to delete the selected items?
-        </h3>
+        </p>
 
         <DialogFooter>
           <DialogClose asChild>
