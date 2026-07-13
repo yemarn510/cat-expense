@@ -3,8 +3,10 @@ import {
   addExpense,
   cancelDialog,
   clearExpensesStorage,
+  expectMaxAmountHighlighted,
   expectStoredExpenses,
   expectToast,
+  expenseRow,
   fillExpenseForm,
   getStoredExpenses,
   gotoApp,
@@ -107,5 +109,22 @@ test.describe('Adding expenses', () => {
     await page.reload()
     await expect(itemCell(page, 'Kibble Bag')).toBeVisible()
     await expectStoredExpenses(page, [expense])
+  })
+
+  test('8. after adding a higher amount, that row is highlighted as max', async ({
+    page,
+  }) => {
+    const lower: StoredExpense = { item: 'Cheap Toy', category: 'accessory', amount: 10 }
+    const higher: StoredExpense = { item: 'Premium Condo', category: 'furniture', amount: 250 }
+
+    await addExpense(page, lower)
+    await expectToast(page, 'Successfully added an item')
+    await expectMaxAmountHighlighted(page, 'Cheap Toy')
+
+    await addExpense(page, higher)
+    await expectToast(page, 'Successfully added an item')
+    await expectMaxAmountHighlighted(page, 'Premium Condo')
+    await expect(expenseRow(page, 'Cheap Toy')).not.toHaveClass(/bg-primary\/40/)
+    await expectStoredExpenses(page, [lower, higher])
   })
 })

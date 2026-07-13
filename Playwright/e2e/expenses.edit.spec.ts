@@ -2,8 +2,10 @@ import { test, expect } from '@playwright/test'
 import {
   cancelDialog,
   editExpenseAt,
+  expectMaxAmountHighlighted,
   expectStoredExpenses,
   expectToast,
+  expenseRow,
   getStoredExpenses,
   gotoApp,
   itemCell,
@@ -84,6 +86,24 @@ test.describe('Editing expenses', () => {
     await expectToast(page, 'Successfully edited an item')
     await expectStoredExpenses(page, [
       { item: 'Cat Food', category: 'food', amount: 40 },
+      seedExpenses[1],
+      seedExpenses[2],
+    ])
+  })
+
+  test('14. after editing amount higher, that row is highlighted as max', async ({
+    page,
+  }) => {
+    // Seed max is Cat Tree (120)
+    await expectMaxAmountHighlighted(page, 'Cat Tree')
+
+    await editExpenseAt(page, 'Cat Food', { amount: 200 })
+
+    await expectToast(page, 'Successfully edited an item')
+    await expectMaxAmountHighlighted(page, 'Cat Food')
+    await expect(expenseRow(page, 'Cat Tree')).not.toHaveClass(/bg-primary\/40/)
+    await expectStoredExpenses(page, [
+      { item: 'Cat Food', category: 'food', amount: 200 },
       seedExpenses[1],
       seedExpenses[2],
     ])

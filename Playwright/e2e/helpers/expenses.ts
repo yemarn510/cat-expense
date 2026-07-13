@@ -54,6 +54,21 @@ export function itemCell(page: Page, itemName: string): Locator {
   return page.getByRole('cell', { name: itemName, exact: true })
 }
 
+export function expenseRow(page: Page, itemName: string): Locator {
+  return page.locator('[data-slot="table-body"] tr').filter({
+    has: itemCell(page, itemName),
+  })
+}
+
+export async function expectMaxAmountHighlighted(
+  page: Page,
+  itemName: string,
+): Promise<void> {
+  const highlighted = page.locator('[data-slot="table-body"] tr.bg-primary\\/40')
+  await expect(highlighted).toHaveCount(1)
+  await expect(expenseRow(page, itemName)).toHaveClass(/bg-primary\/40/)
+}
+
 export async function getStoredExpenses(page: Page): Promise<StoredExpense[]> {
   const raw = await page.evaluate((key) => window.localStorage.getItem(key), EXPENSES_STORAGE_KEY)
   if (!raw) return []
