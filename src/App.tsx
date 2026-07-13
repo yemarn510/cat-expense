@@ -51,7 +51,7 @@ export default function App(): JSX.Element {
       <Toaster />
       <Nav/>
 
-      <section className="max-w-4xl mx-auto p-5 md:p-10 main-content-height">
+      <section className="max-w-4xl mx-auto p-3 md:p-10 main-content-height">
         <div className="flex flex-col md:flex-row justify-between gap-3 md:gap-auto mb-5 md:mb-10">
           <h2 className="text-2xl">Expense List</h2>
 

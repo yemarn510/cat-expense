@@ -9,10 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import type { Expense, ExpenseTableParams } from "@/types/expense.models"
+import type { ExpenseTableParams } from "@/types/expense.models"
 import { EXPENSE_DICTIONARY } from "@/constants/common.constants"
-import { cn } from "@/lib/utils"
-import { useEffect, useState } from "react"
 
 export default function ExpenseTable({
   params,
@@ -57,7 +55,7 @@ export default function ExpenseTable({
   }
 
   return (
-    <Table>
+    <Table className="min-w-100">
       <TableHeader>
         <TableRow>
           <TableHead className="w-1/9">
