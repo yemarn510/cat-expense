@@ -1,12 +1,18 @@
+import { AddExpenseDialog } from "./components/dialogs/AddExpenseDialog"
 import Nav from "./components/Navbar"
-import { Button } from "./components/ui/button"
+
 
 function App() {
+
+
+
   return (
     <main>
       <Nav/>
 
-      <Button> testing </Button>
+      <section className="max-w-4xl mx-auto p-10">
+        <AddExpenseDialog />        
+      </section>
     </main>
   )
 }
