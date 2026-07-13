@@ -22,7 +22,7 @@ test.describe('Adding expenses', () => {
     await gotoApp(page)
   })
 
-  test('1. adds a Food expense, shows success toast, and writes localStorage', async ({
+  test('adds a Food expense, shows success toast, and writes localStorage', async ({
     page,
   }) => {
     const expense: StoredExpense = { item: 'Tuna Treats', category: 'food', amount: 12 }
@@ -34,7 +34,7 @@ test.describe('Adding expenses', () => {
     await expectStoredExpenses(page, [expense])
   })
 
-  test('2. adds a Furniture expense and persists category value in localStorage', async ({
+  test('adds a Furniture expense and persists category value in localStorage', async ({
     page,
   }) => {
     const expense: StoredExpense = { item: 'Scratching Post', category: 'furniture', amount: 80 }
@@ -47,7 +47,7 @@ test.describe('Adding expenses', () => {
     await expectStoredExpenses(page, [expense])
   })
 
-  test('3. adds an Accessory expense and stores amount as a number', async ({ page }) => {
+  test('adds an Accessory expense and stores amount as a number', async ({ page }) => {
     const expense: StoredExpense = { item: 'Laser Pointer', category: 'accessory', amount: 18 }
 
     await addExpense(page, expense)
@@ -58,7 +58,7 @@ test.describe('Adding expenses', () => {
     expect(typeof stored[0].amount).toBe('number')
   })
 
-  test('4. appends multiple adds and keeps localStorage order', async ({ page }) => {
+  test('appends multiple adds and keeps localStorage order', async ({ page }) => {
     const first: StoredExpense = { item: 'Wet Food', category: 'food', amount: 10 }
     const second: StoredExpense = { item: 'Cat Bed', category: 'furniture', amount: 45 }
     const third: StoredExpense = { item: 'Toy Mouse', category: 'accessory', amount: 8 }
@@ -76,7 +76,7 @@ test.describe('Adding expenses', () => {
     await expect(page.getByRole('row')).toHaveCount(4) // header + 3 rows
   })
 
-  test('5. shows validation errors and does not update localStorage on empty submit', async ({
+  test('shows validation errors and does not update localStorage on empty submit', async ({
     page,
   }) => {
     await openAddDialog(page)
@@ -89,7 +89,7 @@ test.describe('Adding expenses', () => {
     await expectStoredExpenses(page, [])
   })
 
-  test('6. Cancel on add leaves localStorage empty', async ({ page }) => {
+  test('Cancel on add leaves localStorage empty', async ({ page }) => {
     await openAddDialog(page)
     await fillExpenseForm(page, { item: 'Should Not Save', category: 'food', amount: 99 })
     await cancelDialog(page)
@@ -99,7 +99,7 @@ test.describe('Adding expenses', () => {
     await expectStoredExpenses(page, [])
   })
 
-  test('7. added expense survives page reload via localStorage', async ({ page }) => {
+  test('added expense survives page reload via localStorage', async ({ page }) => {
     const expense: StoredExpense = { item: 'Kibble Bag', category: 'food', amount: 30 }
 
     await addExpense(page, expense)
@@ -111,7 +111,7 @@ test.describe('Adding expenses', () => {
     await expectStoredExpenses(page, [expense])
   })
 
-  test('8. after adding a higher amount, that row is highlighted as max', async ({
+  test('after adding a higher amount, that row is highlighted as max', async ({
     page,
   }) => {
     const lower: StoredExpense = { item: 'Cheap Toy', category: 'accessory', amount: 10 }

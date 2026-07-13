@@ -17,7 +17,7 @@ test.describe('Duplicating expenses', () => {
     await expect(itemCell(page, 'Cat Food')).toBeVisible()
   })
 
-  test('20. duplicates an expense, shows toast with item name, and appends localStorage', async ({
+  test('duplicates an expense, shows toast with item name, and appends localStorage', async ({
     page,
   }) => {
     await duplicateExpense(page, 'Cat Food')
@@ -26,7 +26,7 @@ test.describe('Duplicating expenses', () => {
     await expectStoredExpenses(page, [...seedExpenses, seedExpenses[0]])
   })
 
-  test('21. duplicated row is appended at the end of the table and storage', async ({
+  test('duplicated row is appended at the end of the table and storage', async ({
     page,
   }) => {
     await duplicateExpense(page, 'Bell Collar')
@@ -39,7 +39,7 @@ test.describe('Duplicating expenses', () => {
     await expect(itemCell(page, 'Bell Collar')).toHaveCount(2)
   })
 
-  test('22. duplicate copies item, category, and amount exactly', async ({ page }) => {
+  test('duplicate copies item, category, and amount exactly', async ({ page }) => {
     await duplicateExpense(page, 'Cat Tree')
 
     await expectToast(page, 'Duplicated "Cat Tree" successfully')
@@ -51,7 +51,7 @@ test.describe('Duplicating expenses', () => {
     expect(copy).toEqual({ item: 'Cat Tree', category: 'furniture', amount: 120 })
   })
 
-  test('23. duplicating twice creates two identical trailing entries', async ({ page }) => {
+  test('duplicating twice creates two identical trailing entries', async ({ page }) => {
     await duplicateExpense(page, 'Cat Food')
     await expectToast(page, 'Duplicated "Cat Food" successfully')
 
@@ -65,7 +65,7 @@ test.describe('Duplicating expenses', () => {
     ])
   })
 
-  test('24. duplicate from a seeded list keeps originals intact in localStorage', async ({
+  test('duplicate from a seeded list keeps originals intact in localStorage', async ({
     page,
   }) => {
     await duplicateExpense(page, 'Cat Tree')

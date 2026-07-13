@@ -21,7 +21,7 @@ test.describe('Editing expenses', () => {
     await expect(itemCell(page, 'Cat Food')).toBeVisible()
   })
 
-  test('8. edits item name, shows success toast, and updates localStorage', async ({
+  test('edits item name, shows success toast, and updates localStorage', async ({
     page,
   }) => {
     await editExpenseAt(page, 'Cat Food', { item: 'Premium Cat Food' })
@@ -35,7 +35,7 @@ test.describe('Editing expenses', () => {
     ])
   })
 
-  test('9. edits category and stores the new category value', async ({ page }) => {
+  test('edits category and stores the new category value', async ({ page }) => {
     await editExpenseAt(page, 'Cat Food', { category: 'accessory' })
 
     await expectToast(page, 'Successfully edited an item')
@@ -46,7 +46,7 @@ test.describe('Editing expenses', () => {
     ])
   })
 
-  test('10. edits amount and keeps amount as a number in localStorage', async ({ page }) => {
+  test('edits amount and keeps amount as a number in localStorage', async ({ page }) => {
     await editExpenseAt(page, 'Cat Tree', { amount: 150 })
 
     await expectToast(page, 'Successfully edited an item')
@@ -55,7 +55,7 @@ test.describe('Editing expenses', () => {
     expect(typeof stored[1].amount).toBe('number')
   })
 
-  test('11. edits all fields on one expense in a single submit', async ({ page }) => {
+  test('edits all fields on one expense in a single submit', async ({ page }) => {
     const updated: StoredExpense = {
       item: 'Luxury Cat Condo',
       category: 'furniture',
@@ -68,7 +68,7 @@ test.describe('Editing expenses', () => {
     await expectStoredExpenses(page, [seedExpenses[0], seedExpenses[1], updated])
   })
 
-  test('12. Cancel on edit leaves localStorage unchanged', async ({ page }) => {
+  test('Cancel on edit leaves localStorage unchanged', async ({ page }) => {
     await page.getByRole('button', { name: 'Edit Cat Food' }).click()
     await expect(page.getByRole('dialog')).toBeVisible()
     await page.getByRole('dialog').locator('#item').fill('Changed Then Cancelled')
@@ -78,7 +78,7 @@ test.describe('Editing expenses', () => {
     await expectStoredExpenses(page, seedExpenses)
   })
 
-  test('13. editing the first row does not change later rows in localStorage', async ({
+  test('editing the first row does not change later rows in localStorage', async ({
     page,
   }) => {
     await editExpenseAt(page, 'Cat Food', { amount: 40 })
@@ -91,7 +91,7 @@ test.describe('Editing expenses', () => {
     ])
   })
 
-  test('14. after editing amount higher, that row is highlighted as max', async ({
+  test('after editing amount higher, that row is highlighted as max', async ({
     page,
   }) => {
     // Seed max is Cat Tree (120)

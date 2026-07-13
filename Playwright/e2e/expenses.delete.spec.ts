@@ -20,7 +20,7 @@ test.describe('Deleting expenses', () => {
     await expect(itemCell(page, 'Cat Food')).toBeVisible()
   })
 
-  test('14. deletes a single selected expense with toast and localStorage update', async ({
+  test('deletes a single selected expense with toast and localStorage update', async ({
     page,
   }) => {
     await selectExpenseRow(page, 0)
@@ -31,7 +31,7 @@ test.describe('Deleting expenses', () => {
     await expectStoredExpenses(page, [seedExpenses[1], seedExpenses[2]])
   })
 
-  test('15. deletes multiple selected expenses and toast shows the count', async ({
+  test('deletes multiple selected expenses and toast shows the count', async ({
     page,
   }) => {
     await selectExpenseRow(page, 0)
@@ -43,7 +43,7 @@ test.describe('Deleting expenses', () => {
     await expect(itemCell(page, 'Cat Tree')).toBeVisible()
   })
 
-  test('16. deletes all expenses via select-all and clears localStorage', async ({
+  test('deletes all expenses via select-all and clears localStorage', async ({
     page,
   }) => {
     await selectAllExpenses(page)
@@ -54,7 +54,7 @@ test.describe('Deleting expenses', () => {
     await expectStoredExpenses(page, [])
   })
 
-  test('17. delete with no selection shows error toast and keeps localStorage', async ({
+  test('delete with no selection shows error toast and keeps localStorage', async ({
     page,
   }) => {
     await confirmDelete(page)
@@ -64,7 +64,7 @@ test.describe('Deleting expenses', () => {
     await expect(itemCell(page, 'Cat Food')).toBeVisible()
   })
 
-  test('18. Cancel on delete confirmation leaves localStorage unchanged', async ({
+  test('Cancel on delete confirmation leaves localStorage unchanged', async ({
     page,
   }) => {
     await selectExpenseRow(page, 1)
@@ -75,7 +75,7 @@ test.describe('Deleting expenses', () => {
     await expectStoredExpenses(page, seedExpenses)
   })
 
-  test('19. remaining localStorage order is stable after middle-row delete', async ({
+  test('remaining localStorage order is stable after middle-row delete', async ({
     page,
   }) => {
     await selectExpenseRow(page, 1)
