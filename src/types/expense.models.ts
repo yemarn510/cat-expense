@@ -60,6 +60,7 @@ export type ExpenseTableParams = {
   selectedRows: Set<number>
   setSelectedRows: (rows: Set<number>) => void
   startEditExpense: (index: number) => void
+  diplicateIndex: (index: number) => void
 }
 
 export type CatFactResponse = {

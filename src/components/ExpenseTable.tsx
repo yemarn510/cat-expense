@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import type { ExpenseTableParams } from "@/types/expense.models"
 import { EXPENSE_DICTIONARY } from "@/constants/common.constants"
-import { Pencil } from "lucide-react"
+import { Copy, Pencil } from "lucide-react"
 
 export default function ExpenseTable({
   params,
@@ -106,13 +106,24 @@ export default function ExpenseTable({
                 ${expense.amount.toLocaleString()}
               </TableCell>
               <TableCell className="text-center">
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label={`Edit ${expense.item}`}
-                  onClick={() => params.startEditExpense(index)}>
-                  <Pencil />
-                </Button>
+                <div className="flex items-center justify-center gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label={`Edit ${expense.item}`}
+                    onClick={() => params.startEditExpense(index)}
+                  >
+                    <Pencil />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label={`Duplicate ${expense.item}`}
+                    onClick={() => params.diplicateIndex(index)}
+                  >
+                    <Copy />
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))
