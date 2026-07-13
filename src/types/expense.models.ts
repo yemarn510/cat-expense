@@ -43,8 +43,11 @@ export type ExpenseErrors = {
   [key in keyof Expense]: boolean
 }
 
-export type AddExpenseDialogParams = {
-  addExpense: (newExpense: Expense) => void
+export type EditOrCreateExpenseDialogParams = {
+  submitExpenseChange: (newExpense: Expense) => void,
+  setExpense: (newExpense?: Expense) => void,
+  editingIndex: number | null,
+  editOrCreateExpense?: Expense,
 }
 
 export type DeleteExpenseDialogParams = {
@@ -56,6 +59,7 @@ export type ExpenseTableParams = {
   expenses: Expense[]
   selectedRows: Set<number>
   setSelectedRows: (rows: Set<number>) => void
+  startEditExpense: (index: number) => void
 }
 
 export type CatFactResponse = {

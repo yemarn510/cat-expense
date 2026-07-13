@@ -2,10 +2,10 @@ import { useState } from "react";
 import type { JSX } from "react/jsx-dev-runtime"
 import { toast } from "sonner"
 
-import type { AddExpenseDialogParams, DeleteExpenseDialogParams, Expense, ExpenseTableParams } from "./types/expense.models";
+import { Expense, type DeleteExpenseDialogParams, type EditOrCreateExpenseDialogParams, type ExpenseTableParams } from "./types/expense.models";
 
 import Nav from "./components/Navbar"
-import AddExpenseDialog from "./components/dialogs/AddExpenseDialog"
+import EditOrCreateExpenseDialog from "./components/dialogs/EditOrCreateExpenseDialog"
 import DeleteExpenseDialog from "./components/dialogs/DeleteExpenseDialog";
 import ExpenseTable from "./components/ExpenseTable";
 import { Toaster } from "./components/ui/sonner";
@@ -14,10 +14,19 @@ import { Toaster } from "./components/ui/sonner";
 export default function App(): JSX.Element {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editOrCreateExpense, setEditOrCreateExpense] = useState<Expense | undefined>(undefined)
 
-  function addExpense(newExpense: Expense): void {
-    const oldAndNewExpenses = [...expenses, newExpense];
+  function submitExpenseChange(newExpense: Expense): void {
+    const oldAndNewExpenses = [...expenses];
+    if (editingIndex !== null) {
+      oldAndNewExpenses[editingIndex] = newExpense;
+    } else {
+      oldAndNewExpenses.push(newExpense)
+    }
     setExpenses(oldAndNewExpenses);
+    setEditOrCreateExpense(undefined)
+    setEditingIndex(null)
   }
 
   function deleteExpense(): void {
@@ -30,9 +39,17 @@ export default function App(): JSX.Element {
     setSelectedRows(new Set())
   }
 
+  function startEditExpense(index: number): void {
+    const editingExpense = expenses[index];
+    setEditOrCreateExpense(editingExpense);
+    setEditingIndex(index);
+  }
 
-  const addExpenseDialogParams: AddExpenseDialogParams = {
-    addExpense,
+  const addExpenseDialogParams: EditOrCreateExpenseDialogParams = {
+    editingIndex,
+    submitExpenseChange,
+    editOrCreateExpense,
+    setExpense: setEditOrCreateExpense,
   }
 
   const deleteExpenseDialogParams: DeleteExpenseDialogParams = {
@@ -44,6 +61,7 @@ export default function App(): JSX.Element {
     expenses,
     selectedRows,
     setSelectedRows,
+    startEditExpense,
   }
 
   return (
@@ -56,7 +74,7 @@ export default function App(): JSX.Element {
           <h2 className="text-2xl">Expense List</h2>
 
           <div className="flex flex-row gap-3">
-            <AddExpenseDialog params={addExpenseDialogParams} />
+            <EditOrCreateExpenseDialog params={addExpenseDialogParams} />
             <DeleteExpenseDialog params={deleteExpenseDialogParams} />
           </div>
         </div>

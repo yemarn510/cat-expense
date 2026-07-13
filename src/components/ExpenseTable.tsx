@@ -9,8 +9,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button"
 import type { ExpenseTableParams } from "@/types/expense.models"
 import { EXPENSE_DICTIONARY } from "@/constants/common.constants"
+import { Pencil } from "lucide-react"
 
 export default function ExpenseTable({
   params,
@@ -69,14 +71,15 @@ export default function ExpenseTable({
             </div>
           </TableHead>
           <TableHead className="w-2/5">Item</TableHead>
-          <TableHead className="w-2/5 text-center">Category</TableHead>
-          <TableHead className="w-1/5 text-right">Amount</TableHead>
+          <TableHead className="w-1/5 text-center">Category</TableHead>
+          <TableHead className="w-1/5 text-center">Amount</TableHead>
+          <TableHead className="w-1/5">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {expenses.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={4} className="text-center text-muted-foreground">
+            <TableCell colSpan={5} className="text-center text-muted-foreground">
               <span>No Expenses so far</span>
             </TableCell>
           </TableRow>
@@ -97,8 +100,17 @@ export default function ExpenseTable({
               <TableCell className="text-center">
                 {EXPENSE_DICTIONARY[expense.category]}
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-center">
                 ${expense.amount.toLocaleString()}
+              </TableCell>
+              <TableCell className="text-center">
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Edit ${expense.item}`}
+                  onClick={() => params.startEditExpense(index)}>
+                  <Pencil />
+                </Button>
               </TableCell>
             </TableRow>
           ))
