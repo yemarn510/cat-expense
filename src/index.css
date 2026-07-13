@@ -138,3 +138,12 @@
     height: calc(100dvh - var(--sm-navbar-height));
   }
 }
+
+.custom-table-height {
+  overflow-y: auto;
+  max-height: calc(100dvh - var(--md-navbar-height) - 140px);
+
+  @media (max-width: 767px) {
+    max-height: calc(100dvh - var(--sm-navbar-height) - 120px);
+  }
+}

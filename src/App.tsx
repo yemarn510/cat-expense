@@ -79,7 +79,7 @@ export default function App(): JSX.Element {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-3">
+        <div className="bg-white rounded-xl p-3 custom-table-height">
           <ExpenseTable params={expenseTableParams} />
         </div>
       </section>

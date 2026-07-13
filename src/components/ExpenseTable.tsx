@@ -65,6 +65,7 @@ export default function ExpenseTable({
               <Checkbox
                 id="expense-checkbox-all"
                 checked={allSelected}
+                className="border border-foreground"
                 disabled={expenses.length === 0}
                 onCheckedChange={toggleSelectAll}
               />
@@ -92,6 +93,7 @@ export default function ExpenseTable({
               <TableCell className="text-center">
                 <Checkbox
                   id={`expense-checkbox-${index}`}
+                  className="border border-foreground"
                   checked={params.selectedRows.has(index)}
                   onCheckedChange={() => toggleCheck(index)}
                 />
