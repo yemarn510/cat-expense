@@ -60,11 +60,11 @@ export default function AddExpenseDialog({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="w-full">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Add Expense</DialogTitle>
           <DialogDescription>
-            Add Expenses for your cat to track
+            Note down expense detils for your cat to track
           </DialogDescription>
         </DialogHeader>
 
@@ -145,7 +145,7 @@ export default function AddExpenseDialog({
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button type="submit" onClick={() => addExpense() }>
-            Save changes
+            Submit
           </Button>
         </DialogFooter>
       </DialogContent>
