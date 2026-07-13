@@ -7,6 +7,7 @@ import {
   expectStoredExpenses,
   expectToast,
   expenseRow,
+  fieldError,
   fillExpenseForm,
   getStoredExpenses,
   gotoApp,
@@ -86,6 +87,44 @@ test.describe('Adding expenses', () => {
 
     await expect(page.getByText('This fields cannot be blank*').first()).toBeVisible()
     await expect(page.getByRole('dialog')).toBeVisible()
+    await expectStoredExpenses(page, [])
+  })
+
+  test('shows field errors only on the blank related fields', async ({ page }) => {
+    const dialog = page.getByRole('dialog')
+    const blankMessage = 'This fields cannot be blank*'
+
+    // Blank name + amount (category defaults to Food) → errors on item and amount only
+    await openAddDialog(page)
+    await dialog.locator('#item').fill('')
+    await dialog.locator('#amount').fill('')
+    await submitExpenseForm(page)
+
+    await expect(fieldError(page, 'item')).toHaveText(blankMessage)
+    await expect(fieldError(page, 'amount')).toHaveText(blankMessage)
+    await expect(fieldError(page, 'category')).toHaveCount(0)
+    await expect(dialog).toBeVisible()
+    await expectStoredExpenses(page, [])
+
+    // Fix name only → amount error remains, item error clears on next submit
+    await dialog.locator('#item').fill('Partial Fill')
+    await submitExpenseForm(page)
+
+    await expect(fieldError(page, 'item')).toHaveCount(0)
+    await expect(fieldError(page, 'amount')).toHaveText(blankMessage)
+    await expect(fieldError(page, 'category')).toHaveCount(0)
+    await expect(dialog).toBeVisible()
+    await expectStoredExpenses(page, [])
+
+    // Blank name again with amount filled → item error only
+    await dialog.locator('#item').fill('')
+    await dialog.locator('#amount').fill('20')
+    await submitExpenseForm(page)
+
+    await expect(fieldError(page, 'item')).toHaveText(blankMessage)
+    await expect(fieldError(page, 'amount')).toHaveCount(0)
+    await expect(fieldError(page, 'category')).toHaveCount(0)
+    await expect(dialog).toBeVisible()
     await expectStoredExpenses(page, [])
   })
 

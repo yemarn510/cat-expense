@@ -89,6 +89,15 @@ export async function expectToast(page: Page, message: string | RegExp): Promise
   await expect(toast.first()).toBeVisible()
 }
 
+/** Error message rendered under a specific form control (#item, #amount, #category). */
+export function fieldError(page: Page, fieldId: 'item' | 'amount' | 'category'): Locator {
+  return page
+    .getByRole('dialog')
+    .locator(`[data-slot="field"]`)
+    .filter({ has: page.locator(`#${fieldId}`) })
+    .locator('small.text-destructive')
+}
+
 export async function openAddDialog(page: Page): Promise<void> {
   await page.getByRole('button', { name: 'Add Expense' }).click()
   await expect(page.getByRole('dialog')).toBeVisible()
