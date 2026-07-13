@@ -1,11 +1,13 @@
 import type { JSX } from 'react'
 
 export default function Nav(): JSX.Element {
-  return <nav className='flex flex-row py-5 px-20  items-center gap-2 border border-b border-gray-200 bg-white'>
+  return <nav className='flex flex-row py-5 px-20  items-center gap-2 border border-b border-gray-200 relative'>
     <img src="/svgs/cat-paw.svg" alt="pawket icon" className='w-auto h-20' />
     <div className='w-auto flex flex-col'>
       <h1 className='text-4xl'>Pawket</h1>
       <h2 className='text-sm mt-auto'>Cat Expense Tracker</h2>
     </div>
+
+    <img src="/svgs/peeking-cat.svg" alt="peeking cat" className='w-auto h-20 absolute -bottom-3 right-0' />
   </nav>
 }
