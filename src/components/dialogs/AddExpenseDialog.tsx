@@ -75,6 +75,7 @@ export default function AddExpenseDialog({
       <DialogTrigger asChild>
         <Button
           variant="default"
+          className="w-1/2 md:w-auto"
           onClick={() => openDialog() }>
           Add Expense
         </Button>

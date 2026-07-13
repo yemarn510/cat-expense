@@ -86,7 +86,7 @@ export default function ExpenseTable({
           expenses.map((expense, index) => (
             <TableRow
               key={index}
-              className={`${maxAmountIndex === index && "bg-destructive/50"}`}
+              className={`${maxAmountIndex === index && "bg-primary/40"}`}
             >
               <TableCell className="text-center">
                 <Checkbox

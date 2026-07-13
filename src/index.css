@@ -51,6 +51,9 @@
 }
 
 :root {
+  --font-size: 16px;
+  --sm-navbar-height: 6.375rem;
+  --md-navbar-height: 7.625rem;
   --radius: 0.5rem;
   --background: oklch(0.972 0.006 74.91696408136228);
   --foreground: oklch(0.292 0.015 53.82294825902236);
@@ -125,5 +128,13 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.main-content-height {
+  height: calc(100dvh - var(--md-navbar-height));
+
+  @media (max-width: 767px) {
+    height: calc(100dvh - var(--sm-navbar-height));
   }
 }

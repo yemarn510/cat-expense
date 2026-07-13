@@ -31,6 +31,7 @@ export default function DeleteExpenseDialog({
             onOpenChange={(open) => setIsOpen(open)}>
       <DialogTrigger asChild>
         <Button
+          className="w-1/2 md:w-auto"
           variant="destructive">
           Delete Expense
         </Button>
