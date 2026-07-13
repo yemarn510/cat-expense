@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { JSX } from "react/jsx-dev-runtime"
+import { toast } from "sonner"
 
 import type { AddExpenseDialogParams, DeleteExpenseDialogParams, Expense, ExpenseTableParams } from "./types/expense.models";
 
@@ -7,6 +8,7 @@ import Nav from "./components/Navbar"
 import AddExpenseDialog from "./components/dialogs/AddExpenseDialog"
 import DeleteExpenseDialog from "./components/dialogs/DeleteExpenseDialog";
 import ExpenseTable from "./components/ExpenseTable";
+import { Toaster } from "./components/ui/sonner";
 
 
 export default function App(): JSX.Element {
@@ -20,7 +22,7 @@ export default function App(): JSX.Element {
 
   function deleteExpense(): void {
     if (selectedRows.size === 0) {
-      // add toaster;
+      toast.error("Select at least one expense to delete")
       return;
     }
     const newExpenses = expenses.filter((_, index) => !selectedRows.has(index))
@@ -46,6 +48,7 @@ export default function App(): JSX.Element {
 
   return (
     <main>
+      <Toaster />
       <Nav/>
 
       <section className="max-w-4xl mx-auto p-10">
@@ -58,7 +61,9 @@ export default function App(): JSX.Element {
           </div>
         </div>
 
-        <ExpenseTable params={expenseTableParams} />
+        <div className="bg-white rounded-xl p-3">
+          <ExpenseTable params={expenseTableParams} />
+        </div>
       </section>
     </main>
   )
