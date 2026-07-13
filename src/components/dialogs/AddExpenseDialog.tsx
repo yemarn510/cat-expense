@@ -20,8 +20,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { EXPENSE_CATEGORIES } from "@/constants/common.constants"
+import { CatService } from "@/services/cat-facts.service"
 import { Expense, type AddExpenseDialogParams, type ExpenseErrors } from "@/types/expense.models"
 import { useState, type JSX } from 'react'
+
+const catService = new CatService()
 
 export default function AddExpenseDialog({
   params,
@@ -30,27 +33,44 @@ export default function AddExpenseDialog({
 }): JSX.Element {
 
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [error, setError] = useState<ExpenseErrors>({} as ExpenseErrors);
+  const [error, setError] = useState<ExpenseErrors>({} as ExpenseErrors)
   const [expense, setExpense] = useState<Expense>(new Expense({}))
-  
+  const [catFact, setCatFact] = useState<string>("")
+  const [catFactLoading, setCatFactLoading] = useState<boolean>(false)
+  const [randomCatImage, setRandomCatImage] = useState<number>(1)
+
+  async function loadCatFact(): Promise<void> {
+    setCatFactLoading(true)
+    setCatFact("")
+    try {
+      const data = await catService.getCatFact()
+      setCatFact(data.fact)
+    } catch (err) {
+      setCatFact("Could not load a cat fact right now. - " + err)
+    } finally {
+      setCatFactLoading(false)
+    }
+  }
 
   function openDialog(): void {
-    setExpense(new Expense({}));
+    setExpense(new Expense({}))
     setIsOpen(true)
     setError({} as ExpenseErrors)
+    loadCatFact()
+    setRandomCatImage(Math.floor(Math.random() * 4) + 1) // for cat image changes
   }
 
   function addExpense(): void {
     if (!expense.isValid()) {
       setError(expense.error)
-      return;
+      return
     }
-    params.addExpense(expense);
-    setIsOpen(false);
+    params.addExpense(expense)
+    setIsOpen(false)
   }
 
   return (
-    <Dialog open={isOpen} 
+    <Dialog open={isOpen}
             onOpenChange={(open) => setIsOpen(open)}>
       <DialogTrigger asChild>
         <Button
@@ -68,77 +88,92 @@ export default function AddExpenseDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <FieldGroup>
-          {/* Item Name  */}
-          <Field>
-            <Label htmlFor="item">Name</Label>
-            <Input
-              id="item"
-              name="item"
-              placeholder="Item Name"
-              value={expense.item}
-              onChange={(e) =>
-                setExpense(new Expense({ ...expense, item: e.target.value }))
+        <div className="grid gap-6 sm:grid-cols-2">
+          <FieldGroup>
+            {/* Item Name  */}
+            <Field>
+              <Label htmlFor="item">Name</Label>
+              <Input
+                id="item"
+                name="item"
+                placeholder="Item Name"
+                value={expense.item}
+                onChange={(e) =>
+                  setExpense(new Expense({ ...expense, item: e.target.value }))
+                }
+              />
+              {
+                error['item'] &&
+                <small className="text-destructive">This fields cannot be blank*</small>
               }
-            />
-            {
-              error['item'] &&
-              <small className="text-destructive">This fields cannot be blank*</small>
-            }
-          </Field>
+            </Field>
 
-          {/* Category */}
-          <Field>
-            <Label htmlFor="category">Category</Label>
-            <Select
-              value={expense.category}
-              onValueChange={(category) =>
-                setExpense(new Expense({ ...expense, category: category ?? '' }))
+            {/* Category */}
+            <Field>
+              <Label htmlFor="category">Category</Label>
+              <Select
+                value={expense.category}
+                onValueChange={(category) =>
+                  setExpense(new Expense({ ...expense, category: category ?? '' }))
+                }
+              >
+                <SelectTrigger id="category" className="w-full">
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {EXPENSE_CATEGORIES.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {category.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {
+                error['category'] &&
+                <small className="text-destructive">This fields cannot be blank*</small>
               }
-            >
-              <SelectTrigger id="category" className="w-full">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {EXPENSE_CATEGORIES.map((category) => (
-                  <SelectItem key={category.value} value={category.value}>
-                    {category.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {
-              error['category'] &&
-              <small className="text-destructive">This fields cannot be blank*</small>
-            }
-          </Field>
+            </Field>
 
-          {/* Amount */}
-          <Field>
-            <Label htmlFor="amount">Amount</Label>
-            <Input
-              id="amount"
-              name="amount"
-              type="number"
-              min="0"
-              step="1"
-              placeholder="Item amount"
-              value={expense.amount || ''}
-              onChange={(e) =>
-                setExpense(
-                  new Expense({
-                    ...expense,
-                    amount: e.target.value === '' ? 0 : Number(e.target.value),
-                  })
-                )
+            {/* Amount */}
+            <Field>
+              <Label htmlFor="amount">Amount</Label>
+              <Input
+                id="amount"
+                name="amount"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="Item amount"
+                value={expense.amount || ''}
+                onChange={(e) =>
+                  setExpense(
+                    new Expense({
+                      ...expense,
+                      amount: e.target.value === '' ? 0 : Number(e.target.value),
+                    })
+                  )
+                }
+              />
+              {
+                error['amount'] &&
+                <small className="text-destructive">This fields cannot be blank*</small>
               }
+            </Field>
+          </FieldGroup>
+
+          <aside className="rounded-lg bg-muted/50 p-4 relative min-h-40">
+            <p className="mb-2 font-medium text-primary">Random cat fact:</p>
+            <p className="text-sm text-muted-foreground italic">
+              {catFactLoading ? "Loading..." : catFact}
+            </p>
+
+            <img
+              src={`/images/${randomCatImage}.svg`}
+              alt="cat facts"
+              className="absolute bottom-0 right-0 max-h-30 w-auto"
             />
-            {
-              error['amount'] &&
-              <small className="text-destructive">This fields cannot be blank*</small>
-            }
-          </Field>
-        </FieldGroup>
+          </aside>
+        </div>
 
         <DialogFooter>
           <DialogClose asChild>

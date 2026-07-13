@@ -57,3 +57,8 @@ export type ExpenseTableParams = {
   selectedRows: Set<number>
   setSelectedRows: (rows: Set<number>) => void
 }
+
+export type CatFactResponse = {
+  fact: string
+  length: number
+}
