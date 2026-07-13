@@ -9,8 +9,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import type { ExpenseTableParams } from "@/types/expense.models"
-import { EXPENSE_CATEGORIES } from "@/constants/common.constants"
+import type { Expense, ExpenseTableParams } from "@/types/expense.models"
+import { EXPENSE_DICTIONARY } from "@/constants/common.constants"
+import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
 
 export default function ExpenseTable({
   params,
@@ -18,13 +20,13 @@ export default function ExpenseTable({
   params: ExpenseTableParams
 }): JSX.Element {
 
-  const categoryDictionary = EXPENSE_CATEGORIES.reduce(
-    (acc, curr) => {
-      acc[curr.value] = curr.label
-      return acc
-    },
-    {} as Record<string, string>
-  )
+  const expenses = params.expenses;
+
+  const allSelected =
+    expenses.length > 0 &&
+    params.selectedRows.size === expenses.length
+
+  const maxAmountIndex = findMaxAmountIndex();
 
   function toggleCheck(rowIndex: number): void {
     const selectedRows = new Set(params.selectedRows)
@@ -33,27 +35,60 @@ export default function ExpenseTable({
     params.setSelectedRows(selectedRows)
   }
 
+  function toggleSelectAll(): void {
+    if (allSelected) {
+      params.setSelectedRows(new Set())
+      return
+    }
+    params.setSelectedRows(
+      new Set(expenses.map((_, index) => index))
+    )
+  }
+
+  function findMaxAmountIndex(): number | null {
+    if (!expenses.length) {
+      return null;
+    }
+    return expenses.reduce(
+      (maxIndex, expense, index, arr) =>
+        expense.amount > arr[maxIndex].amount ? index : maxIndex,
+      0
+    )
+  }
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-1/9"></TableHead>
-          <TableHead className="w-3/5">Item</TableHead>
-          <TableHead className="w-1/5 text-center">Category</TableHead>
+          <TableHead className="w-1/9">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="expense-checkbox-all"
+                checked={allSelected}
+                disabled={expenses.length === 0}
+                onCheckedChange={toggleSelectAll}
+              />
+            </div>
+          </TableHead>
+          <TableHead className="w-2/5">Item</TableHead>
+          <TableHead className="w-2/5 text-center">Category</TableHead>
           <TableHead className="w-1/5 text-right">Amount</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {params.expenses.length === 0 ? (
+        {expenses.length === 0 ? (
           <TableRow>
             <TableCell colSpan={4} className="text-center text-muted-foreground">
               <span>No Expenses so far</span>
             </TableCell>
           </TableRow>
         ) : (
-          params.expenses.map((expense, index) => (
-            <TableRow key={index}>
-              <TableCell>
+          expenses.map((expense, index) => (
+            <TableRow
+              key={index}
+              className={`${maxAmountIndex === index && "bg-destructive/50"}`}
+            >
+              <TableCell className="text-center">
                 <Checkbox
                   id={`expense-checkbox-${index}`}
                   checked={params.selectedRows.has(index)}
@@ -62,7 +97,7 @@ export default function ExpenseTable({
               </TableCell>
               <TableCell>{expense.item}</TableCell>
               <TableCell className="text-center">
-                {categoryDictionary[expense.category]}
+                {EXPENSE_DICTIONARY[expense.category]}
               </TableCell>
               <TableCell className="text-right">
                 ${expense.amount.toLocaleString()}
