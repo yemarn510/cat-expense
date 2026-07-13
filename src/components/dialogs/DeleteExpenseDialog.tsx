@@ -1,3 +1,4 @@
+import type { JSX } from "react/jsx-runtime";
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,14 +13,13 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { JSX } from 'react';
 
-export default function AddExpenseDialog(): JSX.Element {
+export default function DeleteExpenseDialog(): JSX.Element {
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Open Dialog</Button>
+        <Button variant="destructive">Delete Expense</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
