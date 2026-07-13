@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import type { ExpenseTableParams } from "@/types/expense.models"
 import { EXPENSE_DICTIONARY } from "@/constants/common.constants"
+import { findMaxAmountIndex } from "@/utils/expense.utils"
 import { Copy, Pencil } from "lucide-react"
 
 export default function ExpenseTable({
@@ -26,7 +27,7 @@ export default function ExpenseTable({
     expenses.length > 0 &&
     params.selectedRows.size === expenses.length
 
-  const maxAmountIndex = findMaxAmountIndex();
+  const maxAmountIndex = findMaxAmountIndex(expenses);
 
   function toggleCheck(rowIndex: number): void {
     const selectedRows = new Set(params.selectedRows)
@@ -42,17 +43,6 @@ export default function ExpenseTable({
     }
     params.setSelectedRows(
       new Set(expenses.map((_, index) => index))
-    )
-  }
-
-  function findMaxAmountIndex(): number | null {
-    if (!expenses.length) {
-      return null;
-    }
-    return expenses.reduce(
-      (maxIndex, expense, index, arr) =>
-        expense.amount > arr[maxIndex].amount ? index : maxIndex,
-      0
     )
   }
 
