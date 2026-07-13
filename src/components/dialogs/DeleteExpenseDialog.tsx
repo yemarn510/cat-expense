@@ -31,9 +31,7 @@ export default function DeleteExpenseDialog({
             onOpenChange={(open) => setIsOpen(open)}>
       <DialogTrigger asChild>
         <Button
-          variant="destructive"
-          disabled={params.selectedRows.size === 0}
-        >
+          variant="destructive">
           Delete Expense
         </Button>
       </DialogTrigger>
