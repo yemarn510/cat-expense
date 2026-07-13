@@ -26,3 +26,5 @@ export const EXPENSE_DICTIONARY = EXPENSE_CATEGORIES.reduce(
 
 
 export const EXPENSES_STORAGE_KEY = "expenses"
+
+export const DEFAULT_FACT = 'Cats can be taught to walk on a leash, but a lot of time and patience is required to teach them. The younger the cat is, the easier it will be for them to learn.';

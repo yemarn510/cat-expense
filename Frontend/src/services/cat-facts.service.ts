@@ -1,10 +1,11 @@
 import { API_ENDPOINTS } from "@/constants/api.constants"
+import { DEFAULT_FACT } from "@/constants/common.constants";
 import type { CatFactResponse } from "@/types/expense.models"
 
 export class CatService {
   cachedFacts: CatFactResponse = {
-    fact: 'Cats can be taught to walk on a leash, but a lot of time and patience is required to teach them. The younger the cat is, the easier it will be for them to learn.',
-    length: 0,
+    fact: DEFAULT_FACT,
+    length: DEFAULT_FACT.length,
   };
 
   async getCatFact(): Promise<CatFactResponse> {
