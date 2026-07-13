@@ -7,10 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies / build
 node_modules
 dist
 dist-ssr
 *.local
+test-results
+playwright-report
+blob-report
+playwright/.cache
 
 # Editor directories and files
 .vscode/*
