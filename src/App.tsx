@@ -15,6 +15,7 @@ import EditOrCreateExpenseDialog from "./components/dialogs/EditOrCreateExpenseD
 import DeleteExpenseDialog from "./components/dialogs/DeleteExpenseDialog";
 import ExpenseTable from "./components/ExpenseTable";
 import { Toaster } from "./components/ui/sonner";
+import Footer from "./components/Footer";
 
 export default function App(): JSX.Element {
   const [expenses, setExpenses] = useState<Expense[]>(() => initList());
@@ -93,7 +94,7 @@ export default function App(): JSX.Element {
 
   return (
     <main>
-      <Toaster position="bottom-center" theme="light" />
+      <Toaster position="bottom-center" theme="light" closeButton={true} />
       <Nav/>
 
       <section className="max-w-4xl mx-auto p-3 md:p-10 main-content-height">
@@ -110,6 +111,8 @@ export default function App(): JSX.Element {
           <ExpenseTable params={expenseTableParams} />
         </div>
       </section>
+
+      <Footer />
     </main>
   )
 }
