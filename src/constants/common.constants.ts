@@ -12,14 +12,6 @@ export const EXPENSE_CATEGORIES: ExpenseCategory[] = [
   {
     value: 'accessory',
     label: 'Accessory',
-  },
-  {
-    value: 'cleaning',
-    label: 'Cleaning'
-  },
-  {
-    value: 'toys',
-    label: 'Toys'
   }
 ]
 
