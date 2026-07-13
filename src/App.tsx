@@ -1,8 +1,10 @@
+import Nav from "./components/Navbar"
+
 function App() {
   return (
-    <>
-      <h1 className='text-3xl text-red-500'>Hello TSX</h1>
-    </>
+    <main>
+      <Nav/>
+    </main>
   )
 }
 
