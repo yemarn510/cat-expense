@@ -93,26 +93,28 @@ export default function App(): JSX.Element {
   }
 
   return (
-    <main>
+    <>
       <Toaster position="bottom-center" theme="light" closeButton={true} />
-      <Nav/>
+      <Nav />
 
-      <section className="max-w-4xl mx-auto p-3 md:p-10 main-content-height">
-        <div className="flex flex-col md:flex-row justify-between gap-3 md:gap-auto mb-5 md:mb-10">
-          <h2 className="text-2xl">Expense List</h2>
+      <main>
+        <section className="max-w-4xl mx-auto p-3 md:p-10 main-content-height">
+          <div className="flex flex-col md:flex-row justify-between gap-3 md:gap-auto mb-5 md:mb-10">
+            <h2 className="text-2xl">Expense List</h2>
 
-          <div className="flex flex-row gap-3">
-            <EditOrCreateExpenseDialog params={addExpenseDialogParams} />
-            <DeleteExpenseDialog params={deleteExpenseDialogParams} />
+            <div className="flex flex-row gap-3">
+              <EditOrCreateExpenseDialog params={addExpenseDialogParams} />
+              <DeleteExpenseDialog params={deleteExpenseDialogParams} />
+            </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-xl p-3 custom-table-height">
-          <ExpenseTable params={expenseTableParams} />
-        </div>
-      </section>
+          <div className="bg-white rounded-xl p-3 custom-table-height">
+            <ExpenseTable params={expenseTableParams} />
+          </div>
+        </section>
+      </main>
 
       <Footer />
-    </main>
+    </>
   )
 }
